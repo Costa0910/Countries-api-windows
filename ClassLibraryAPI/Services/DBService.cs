@@ -30,9 +30,9 @@ public class SqLiteService
     /// </summary>
     /// <param name="countries">Countries to save</param>
     /// <param name="status">IProgress param to report status of saving countries to db</param>
-    public async Task<Response> SaveCountries(List<Country> countries, IProgress<double> status)
+    public async Task<Response> SaveCountriesAsync(List<Country> countries, IProgress<double> status)
     {
-        var reponse = await CreateDb();
+        var reponse = await CreateDbAsync();
         if (reponse.Status == false) // if table not created return response
             return reponse;
 
@@ -150,7 +150,7 @@ public class SqLiteService
     /// </summary>
     /// <param name="gettingStatus"></param>
     /// <returns></returns>
-    public async Task<Response> GetCcountries(IProgress<double> gettingStatus)
+    public async Task<Response> GetCountriesAsync(IProgress<double> gettingStatus)
     {
         List<Country> countries = [];
 
@@ -270,7 +270,7 @@ public class SqLiteService
     /// <summary>
     /// Delete all rows in Countries table
     /// </summary>
-    public async Task<Response> DeleteData()
+    public async Task<Response> DeleteDataAsync()
     {
         try
         {
@@ -294,7 +294,7 @@ public class SqLiteService
     /// <summary>
     /// Create a Countries table if it does not exist
     /// </summary>
-    async Task<Response> CreateDb()
+    async Task<Response> CreateDbAsync()
     {
         try
         {

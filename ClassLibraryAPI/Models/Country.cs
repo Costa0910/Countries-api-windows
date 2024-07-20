@@ -19,9 +19,14 @@ public class Country
     public long Population { get; set; }
     public List<string> Continents { get; set; }
 
-#endregion
+    #endregion
 
 #region Properties with default values
+    public string DisplayName { 
+        get { 
+            return Name.Common;
+        } 
+    }
 
     public List<string> Capital
     {
