@@ -30,9 +30,11 @@ public class SqLiteService
     /// </summary>
     /// <param name="countries">Countries to save</param>
     /// <param name="status">IProgress param to report status of saving countries to db</param>
-    public async Task SaveCountries(List<Country> countries, IProgress<double> status)
+    public async Task<Response> SaveCountries(List<Country> countries, IProgress<double> status)
     {
-        await CreateDb();
+        var reponse = await CreateDb();
+        if (reponse.Status == false) // if table not created return response
+            return reponse;
 
         try
         {
@@ -67,10 +69,12 @@ public class SqLiteService
                 // update Progress bar status here
                 status.Report(count / total * 100);
             }
+
+            return new Response () { Status = true, Message = "Países salvos com sucesso" };
         }
         catch (Exception e)
         {
-            DialogService.ShowMessage("Erro", e.Message);
+            return new Response () { Status = false, Message = e.Message };
         }
         finally
         {
@@ -95,7 +99,7 @@ public class SqLiteService
         }
         catch (Exception e)
         {
-            DialogService.ShowMessage("Erro ao tentar baixar imagem", $"Nao foi possivel baixar a imagem: {e.Message}");
+            // DialogService.ShowMessage("Erro ao tentar baixar imagem", $"Nao foi possivel baixar a imagem: {e.Message}");
 
             return null;
         }
@@ -146,7 +150,7 @@ public class SqLiteService
     /// </summary>
     /// <param name="gettingStatus"></param>
     /// <returns></returns>
-    public async Task<List<Country>> GetCcountries(IProgress<double> gettingStatus)
+    public async Task<Response> GetCcountries(IProgress<double> gettingStatus)
     {
         List<Country> countries = [];
 
@@ -189,14 +193,14 @@ public class SqLiteService
         }
         catch (Exception e)
         {
-            DialogService.ShowMessage("Erro", e.Message);
+            return new Response() { Status = false, Message = e.Message };
         }
         finally
         {
             await _connection.CloseAsync();
         }
 
-        return countries;
+        return new Response() { Status = true, Message = "Países carregados com sucesso", Result = countries };
     }
 
     /// <summary>
@@ -219,7 +223,7 @@ public class SqLiteService
         }
         catch (Exception e)
         {
-            DialogService.ShowMessage("Erro ao tentar carregar imagem", $"Nao foi possivel carregar a bandeira do Pais: {e.Message}");
+            //DialogService.ShowMessage("Erro ao tentar carregar imagem", $"Nao foi possivel carregar a bandeira do Pais: {e.Message}");
 
             return null;
         }
@@ -266,7 +270,7 @@ public class SqLiteService
     /// <summary>
     /// Delete all rows in Countries table
     /// </summary>
-    public async Task DeleteData()
+    public async Task<Response> DeleteData()
     {
         try
         {
@@ -274,10 +278,12 @@ public class SqLiteService
             const string sql = "delete from Countries";
             _command = new(sql, _connection);
             await _command.ExecuteNonQueryAsync();
+            return new Response() { Status = true, Message = "Dados apagados com sucesso" };
         }
         catch (Exception e)
         {
-            DialogService.ShowMessage("Erro", e.Message);
+            //DialogService.ShowMessage("Erro", e.Message);
+            return new Response() { Status = false, Message = e.Message };
         }
         finally
         {
@@ -288,7 +294,7 @@ public class SqLiteService
     /// <summary>
     /// Create a Countries table if it does not exist
     /// </summary>
-    async Task CreateDb()
+    async Task<Response> CreateDb()
     {
         try
         {
@@ -307,10 +313,12 @@ public class SqLiteService
                 )";
             _command = new(sqlCommand, _connection);
             await _command.ExecuteNonQueryAsync();
+            return new Response() { Status = true, Message = "Tabela criada com sucesso" };
         }
         catch (Exception e)
         {
-            DialogService.ShowMessage("Erro", e.Message);
+            //DialogService.ShowMessage("Erro", e.Message);
+            return new Response() { Status = false, Message = e.Message };
         }
         finally
         {
