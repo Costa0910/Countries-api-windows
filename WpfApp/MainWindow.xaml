@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
-        Title="Países do Mundo" Height="650" Width="850" FontSize="20" HorizontalAlignment="Center"
+        Title="Países do Mundo" Height="650" Width="1050" FontSize="20" HorizontalAlignment="Center"
         Loaded="Window_Loaded"
         >
     <Grid>
@@ -20,24 +20,24 @@
         <TextBlock FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10" Grid.Row="0">Países</TextBlock>
         <TextBlock HorizontalAlignment="Center" Grid.Row="1">Pesquisa por país</TextBlock>
         <TextBox Grid.Row="2" Margin="225 5" x:Name="search" TextChanged="search_TextChanged"/>
-        <ListBox x:Name="listBox_Countries" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" MinWidth="350" Margin="10 0 0 0" SelectionChanged="listBox_Countries_SelectionChanged"/>
-        <StackPanel Grid.Row="3" Margin="10" Grid.Column="1" HorizontalAlignment="Right" MinWidth="450">
-            <TextBlock Margin="0 0 0 5" x:Name="details" HorizontalAlignment="Center"  FontWeight="Bold">Detalhes do país: Portugal</TextBlock>
+        <ListBox x:Name="listBox_Countries" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" MinWidth="450" Margin="10 0 0 0" SelectionChanged="listBox_Countries_SelectionChanged"/>
+        <StackPanel Grid.Row="3" Margin="10" Grid.Column="1" HorizontalAlignment="Right" Width="550">
+            <TextBlock Margin="0 0 0 5" HorizontalAlignment="Center"  FontWeight="Bold">Detalhes do país: <Run Text="Portugal" FontWeight="Normal" x:Name="details"/></TextBlock>
             <StackPanel>
-                <TextBlock Margin="0 0 0 5" x:Name="name">Nome Oficial: Portugal</TextBlock>
-                <TextBlock Margin="0 0 0 5" x:Name="capital">Capital: Lisbon</TextBlock>
-                <TextBlock Margin="0 0 0 5" x:Name="region">Região: Europe</TextBlock>
-                <TextBlock Margin="0 0 0 5" x:Name="subregion">Sub-região: Noth Europe</TextBlock>
-                <TextBlock Margin="0 0 0 5" x:Name="population">População: 10505500</TextBlock>
-                <TextBlock Margin="0 0 0 5" x:Name="gini">Índice gini: 2007->22.5, 2016 -> 45,5</TextBlock>
-                <TextBlock Margin="0 0 0 5" x:Name="languages">Linguas Faladas: Portugues</TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Nome Oficial: <Run Text="Republica de Portugal" FontWeight="Normal" x:Name="name"/></TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Capital: <Run Text="Lisbon" FontWeight="Normal" x:Name="capital"/></TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Região: <Run Text="Europe" FontWeight="Normal" x:Name="region"/></TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Sub-região: <Run Text="Noth Europe" FontWeight="Normal" x:Name="subregion"/></TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">População: <Run Text="10505500" FontWeight="Normal" x:Name="population"/></TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Índice gini: <Run Text="2007->22.5, 2016 -> 45,5" FontWeight="Normal" x:Name="gini"/></TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Linguas Faladas: <Run Text="Portugues" FontWeight="Normal" x:Name="languages"/></TextBlock>
 
-                <Image x:Name="img" Width="40" Height="40"/>
+                <Image x:Name="img" Width="300" Height="150"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="4" Margin="10" Orientation="Vertical">
-            <TextBlock HorizontalAlignment="Center"><Run Text="Status: ok" x:Name="status"/></TextBlock>
-            <ProgressBar x:Name="progress" Value="50" Width="309" Height="21" Margin="10" HorizontalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Status: <Run Text="ok" FontWeight="Normal" x:Name="status"/></TextBlock>
+            <ProgressBar x:Name="progress" Value="1" Width="309" Height="21" Margin="10" HorizontalAlignment="Center"/>
         </StackPanel>
 
     </Grid>

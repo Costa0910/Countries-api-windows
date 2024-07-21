@@ -213,7 +213,9 @@ public class SqLiteService
     {
         // format
         path = string.Join("", path.Split(" "));
+
         var newPath = @$"Img/{path}.png";
+        newPath = Path.GetFullPath(newPath);
 
         try
         {

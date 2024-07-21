@@ -47,7 +47,7 @@ namespace WpfApp
                     UpdateUI(_countries);
 
                     // delete data from db
-                    status.Text = "Deleting data from db...";
+                    status.Text = "Deleting Countries from db...";
                     await _db.DeleteDataAsync();
 
                     // Save data to SQLite
@@ -84,6 +84,9 @@ namespace WpfApp
             listBox_Countries.ItemsSource = null;
             listBox_Countries.ItemsSource = countries;
             listBox_Countries.DisplayMemberPath = "DisplayName";
+
+            // fire change selection event to display country details 
+            listBox_Countries.SelectedIndex = 0;
         }
 
         private async Task GettingFromDb()
@@ -104,49 +107,53 @@ namespace WpfApp
             }
         }
 
-        private void search_TextChanged(object sender, TextChangedEventArgs e)
+        private async void search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //var selected = _countries.Where(c => c.Name.ToLower().Contains(search.Text.ToLower())).ToList();
+            // not filter while user is still typing
+            await Task.Delay(1000);
 
+            var selected = _countries.Where(c => c.Name.Common.ToLower().Contains(search.Text.ToLower())).ToList();
+
+            if (selected == null || string.IsNullOrWhiteSpace(search.Text))
+            {
+                UpdateUI(_countries);
+            } else
+            {
+                UpdateUI(selected);
+            }
         }
 
         private void listBox_Countries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var country = (Country)listBox_Countries.SelectedItem;
             if (country == null) return;
-            //if (country != null)
-            //{
-            //    var countryWindow = new CountryWindow(country);
-            //    countryWindow.Show();
-            //}
 
             // show detais in the same window
-            details.Text = $"Detalhes do país: {country.DisplayName}";
-            name.Text = $"Nome Oficial: {country.Name.Official}";
-            capital.Text = $"Capital: {string.Join(", ", country.Capital)}";
-            region.Text = $"Região: {country.Region}";
-            subregion.Text = $"Sub-refião: {country.Subregion}";
-            population.Text = $"População: {country.Population:N}";
+            details.Text = country.DisplayName;
+            name.Text = country.Name.Official;
+            capital.Text = string.Join(", ", country.Capital);
+            region.Text = country.Region;
+            subregion.Text = country.Subregion;
+            population.Text = country.Population.ToString("N");
             if (country.Gini.ContainsKey("default")) 
             {
-                gini.Text = "Índice Gini: Não disponível";
+                gini.Text = "Não disponível";
             }
             else
             {
                 var ginis = country.Gini.Select(g => $"{g.Key} -> {g.Value}").ToList();
 
                gini.Text = string.Join(", ", ginis);
-               gini.Text = $"Índice Gini: {string.Join(", ", ginis)}";
             }
 
             if (country.Languages.ContainsKey("default"))
             {
-                languages.Text = "Linguas: Não disponível";
+                languages.Text = "Não disponível";
             }
             else
             {
                 var lang = country.Languages.Select(l => l.Value).ToList();
-                languages.Text = $"Linguas: {string.Join(", ", lang)}";
+                languages.Text = string.Join(", ", lang);
             }
 
             // img
