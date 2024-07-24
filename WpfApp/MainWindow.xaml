@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
-        Title="Países do Mundo" Height="650" Width="1050" FontSize="20" HorizontalAlignment="Center"
+        Title="Países do Mundo" Height="660" Width="1060" FontSize="20" HorizontalAlignment="Center"
         Loaded="Window_Loaded"
         >
     <Grid>
@@ -21,10 +21,11 @@
         <TextBlock HorizontalAlignment="Center" Grid.Row="1">Pesquisa por país</TextBlock>
         <TextBox Grid.Row="2" Margin="225 5" x:Name="search" TextChanged="search_TextChanged"/>
         <ListBox x:Name="listBox_Countries" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" MinWidth="450" Margin="10 0 0 0" SelectionChanged="listBox_Countries_SelectionChanged"/>
-        <StackPanel Grid.Row="3" Margin="10" Grid.Column="1" HorizontalAlignment="Right" Width="550">
-            <TextBlock Margin="0 0 0 5" HorizontalAlignment="Center"  FontWeight="Bold">Detalhes do país: <Run Text="Portugal" FontWeight="Normal" x:Name="details"/></TextBlock>
+        <StackPanel Grid.Row="3" Margin="10" Grid.Column="1" HorizontalAlignment="Right" MinWidth="550">
+            <Image x:Name="img" Width="300" Height="150" HorizontalAlignment="Left"/>
             <StackPanel>
-                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Nome Oficial: <Run Text="Republica de Portugal" FontWeight="Normal" x:Name="name"/></TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Nome: <Run Text="Portugal" FontWeight="Normal" x:Name="name"/></TextBlock>
+                <TextBlock Margin="0 0 0 5" FontWeight="Bold">Nome Oficial: <Run Text="Republica de Portugal" FontWeight="Normal" x:Name="nameOfficial"/></TextBlock>
                 <TextBlock Margin="0 0 0 5" FontWeight="Bold">Capital: <Run Text="Lisbon" FontWeight="Normal" x:Name="capital"/></TextBlock>
                 <TextBlock Margin="0 0 0 5" FontWeight="Bold">Região: <Run Text="Europe" FontWeight="Normal" x:Name="region"/></TextBlock>
                 <TextBlock Margin="0 0 0 5" FontWeight="Bold">Sub-região: <Run Text="Noth Europe" FontWeight="Normal" x:Name="subregion"/></TextBlock>
@@ -32,7 +33,6 @@
                 <TextBlock Margin="0 0 0 5" FontWeight="Bold">Índice gini: <Run Text="2007->22.5, 2016 -> 45,5" FontWeight="Normal" x:Name="gini"/></TextBlock>
                 <TextBlock Margin="0 0 0 5" FontWeight="Bold">Linguas Faladas: <Run Text="Portugues" FontWeight="Normal" x:Name="languages"/></TextBlock>
 
-                <Image x:Name="img" Width="300" Height="150"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="4" Margin="10" Orientation="Vertical">

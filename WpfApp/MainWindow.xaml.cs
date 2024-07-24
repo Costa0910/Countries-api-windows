@@ -44,7 +44,7 @@ namespace WpfApp
                     status.Text = "Countries Loaded from api";
                     _countries = (List<Country>)response.Result;
                     // Update UI
-                    UpdateUI(_countries);
+                    UpdateUI(SortCountries(_countries));
 
                     // delete data from db
                     status.Text = "Deleting Countries from db...";
@@ -97,7 +97,7 @@ namespace WpfApp
             if (dbResult.Status)
             {
                 _countries = (List<Country>)dbResult.Result;
-                UpdateUI(_countries);
+                UpdateUI(SortCountries(_countries));
                 status.Text = "Countries Loaded from DB";
             }
             else
@@ -105,6 +105,14 @@ namespace WpfApp
                 DialogService.ShowMessage("Erro", "Erro ao tentar carregar os países da base de dados");
                 status.Text = "Failed to Load Countries from DB";
             }
+        }
+
+        /// <summary>
+        /// Order countries by name
+        /// </summary>
+        private List<Country> SortCountries(List<Country> country)
+        {
+            return country.OrderBy(c => c.Name.Common).ToList();
         }
 
         private async void search_TextChanged(object sender, TextChangedEventArgs e)
@@ -116,10 +124,10 @@ namespace WpfApp
 
             if (selected == null || string.IsNullOrWhiteSpace(search.Text))
             {
-                UpdateUI(_countries);
+                UpdateUI(SortCountries(_countries));
             } else
             {
-                UpdateUI(selected);
+                UpdateUI(SortCountries(selected));
             }
         }
 
@@ -129,8 +137,8 @@ namespace WpfApp
             if (country == null) return;
 
             // show detais in the same window
-            details.Text = country.DisplayName;
-            name.Text = country.Name.Official;
+            name.Text = country.DisplayName;
+            nameOfficial.Text = country.Name.Official;
             capital.Text = string.Join(", ", country.Capital);
             region.Text = country.Region;
             subregion.Text = country.Subregion;
