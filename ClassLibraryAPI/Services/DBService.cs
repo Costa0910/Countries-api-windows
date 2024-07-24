@@ -200,6 +200,11 @@ public class SqLiteService
             await _connection.CloseAsync();
         }
 
+        if (countries.Count == 0)
+        {
+            return new Response() { Status = false, Message = "Sem dados na base dados" };
+        }
+
         return new Response() { Status = true, Message = "Países carregados com sucesso", Result = countries };
     }
 

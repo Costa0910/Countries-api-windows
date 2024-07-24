@@ -32,41 +32,46 @@ namespace WpfApp
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            status.Text = "Checking Connection...";
+            loaderMessage.Text = "A verificar ligação a internet...";
             var result = await NetworkService.CheckConnection();
             if (result.Status)
             {
                 // Get data from API
-                status.Text = "Connected";
+                loaderMessage.Text = "Ligação a internet estabelicida...";
                 var response = await _api.GetCountriesAsync("/v3.1/all");
                 if (response.Status)
                 {
-                    status.Text = "Countries Loaded from api";
+                    status.Text = "Dados dos países carregados da api...";
                     _countries = (List<Country>)response.Result;
+                    // Show data in UI
+                    loader.Visibility = Visibility.Collapsed;
+                    main_section.Visibility = Visibility.Visible;
+                    status_section.Visibility = Visibility.Visible;
+                    search_section.Visibility = Visibility.Visible;
                     // Update UI
                     UpdateUI(SortCountries(_countries));
 
                     // delete data from db
-                    status.Text = "Deleting Countries from db...";
+                    status.Text = "Apagar os dados antigos da base dados...";
                     await _db.DeleteDataAsync();
 
                     // Save data to SQLite
                     // ADD
-                    status.Text = "Saving Countries to DB...";
+                    status.Text = "A guardar os países na base dados...";
                     var saveResult = await _db.SaveCountriesAsync(_countries, Progress);
                     if (saveResult.Status)
                     {
-                        status.Text = "Countries Saved to DB";
+                        status.Text = "Os dados dos países guardos na base dados.";
                     }
                     else
                     {
                         DialogService.ShowMessage("Erro", "Erro ao tentar guardar os países na base de dados");
-                        status.Text = "Failed to Save Countries to DB";
+                        status.Text = "Erro ao tentar guardar os dados na base dados.";
                     }
                 }
                 else
                 {
-                    status.Text = "Failed to Load Countries from API, trying DB...";
+                    loaderMessage.Text = "Erro ao carregar dados da api, tentando carregar da base dados...";
                     // Get data from SQLite
                     await GettingFromDb();
                 }
@@ -74,7 +79,7 @@ namespace WpfApp
             else
             {
                 // Get data from SQLite
-                status.Text = "Not Connected. Trying DB...";
+                loaderMessage.Text = "Sem ligação a internet, tentando carregar na base de dados...";
                 await GettingFromDb();
             }
         }
@@ -97,13 +102,19 @@ namespace WpfApp
             if (dbResult.Status)
             {
                 _countries = (List<Country>)dbResult.Result;
+
+                // Show data in UI
+                loader.Visibility = Visibility.Collapsed;
+                main_section.Visibility = Visibility.Visible;
+                status_section.Visibility = Visibility.Visible;
+                search_section.Visibility = Visibility.Visible;
                 UpdateUI(SortCountries(_countries));
-                status.Text = "Countries Loaded from DB";
+                status.Text = "Dados dos países carregados da base dados.";
             }
             else
             {
-                DialogService.ShowMessage("Erro", "Erro ao tentar carregar os países da base de dados");
-                status.Text = "Failed to Load Countries from DB";
+                DialogService.ShowMessage("Erro", "Erro ao tentar carregar os países da base de dados.");
+                loaderMessage.Text = dbResult.Message;
             }
         }
 
@@ -118,7 +129,7 @@ namespace WpfApp
         private async void search_TextChanged(object sender, TextChangedEventArgs e)
         {
             // not filter while user is still typing
-            await Task.Delay(1000);
+            await Task.Delay(500);
 
             var selected = _countries.Where(c => c.Name.Common.ToLower().Contains(search.Text.ToLower())).ToList();
 
