@@ -14,14 +14,14 @@ statusSaving.ProgressChanged += (sender, status) =>
                                 {
                                     Console.WriteLine("Status saving: " + status);
                                 };
-await db.DeleteData(); // delete all countries before save downloaded
+await db.DeleteDataAsync(); // delete all countries before save downloaded
 if (contries.Status)
-    await db.SaveCountries(contries.Result as List<Country>, statusSaving);
+    await db.SaveCountriesAsync(contries.Result as List<Country>, statusSaving);
 
 var statusGetting = new Progress<double>();
 statusGetting.ProgressChanged += (sender, status) =>
                                  {
                                      Console.WriteLine("Status getting: " + status);
                                  };
-var countries = await db.GetCcountries(statusGetting);
+var countries = await db.GetCountriesAsync(statusGetting);
 Console.WriteLine("END");
