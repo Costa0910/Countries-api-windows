@@ -88,7 +88,7 @@ namespace WpfApp
         {
             listBox_Countries.ItemsSource = null;
             listBox_Countries.ItemsSource = countries;
-            listBox_Countries.DisplayMemberPath = "DisplayName";
+            //listBox_Countries.DisplayMemberPath = "DisplayName";
 
             // fire change selection event to display country details 
             listBox_Countries.SelectedIndex = 0;
@@ -176,9 +176,8 @@ namespace WpfApp
             }
 
             // img
-            var url = new BitmapImage(new Uri(country.Flags.Png, UriKind.RelativeOrAbsolute));
+            var url = new BitmapImage (new Uri(country.Flags.Png, UriKind.RelativeOrAbsolute));
             img.Source = url;
-
         }
     }
 }

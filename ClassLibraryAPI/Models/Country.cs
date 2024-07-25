@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ClassLibraryAPI.Models;
 
 public class Country
@@ -22,10 +24,27 @@ public class Country
     #endregion
 
 #region Properties with default values
+
+    /// <summary>
+    /// Used to show comun name in UI
+    /// </summary>
+    [JsonIgnore]
     public string DisplayName { 
         get { 
             return Name.Common;
         } 
+    }
+
+    /// <summary>
+    /// As display for the flag image in the UI
+    /// </summary>
+    [JsonIgnore]
+    public Uri DisplayFlag
+    {
+        get
+        {
+            return new Uri(Flags.Png, UriKind.RelativeOrAbsolute);
+        }
     }
 
     public List<string> Capital
